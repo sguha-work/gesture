@@ -16,17 +16,51 @@
     var Gesture = (function(){
       navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;   
       var videoElementId = "video_cameraDisplay",
-          canvasElementId = "canvas_screenShotCanvas", 
           eventName = "gest",
+          screenShotFlag = 0,
+          scaleFactor = 0.25,
           createDomElement = (function(){
-            var video = document.createElement("video"),
-            canvas = document.createElement("canvas");
+            var video = document.createElement("video");
             video.setAttribute("src","");
             video.setAttribute("style","display:block;width:400px; height:400px;");
             video.setAttribute("id", videoElementId);
-            canvas.setAttribute("id", canvasElementId);
             document.body.appendChild(video);
-            document.body.appendChild(canvas);
+            
+          }),
+          capture = (function(video, scaleFactor){
+            if(scaleFactor == null){
+                scaleFactor = 1;
+            }
+            var w = video.videoWidth * scaleFactor,
+                h = video.videoHeight * scaleFactor,
+                canvas = document.createElement('canvas'),
+                ctx;
+            canvas.width  = w;
+            canvas.height = h;
+            ctx = canvas.getContext('2d');
+            ctx.drawImage(video, 0, 0, w, h);
+            return canvas;
+          }),
+          shoot = (function() {
+            var video  = document.getElementById(videoElementId);
+            var canvas = capture(video, scaleFactor);
+            var snapshots = [];
+            snapshots.unshift(canvas);
+            return snapshots;
+          }),
+          compareWithBasicAndFireEvent = (function(initialScreenShot, latestScreenShot) {
+             console.log("compare"); 
+          }),
+          startGestureReading = (function() {
+            var initialScreenShot;
+            window.setInterval(function(){
+              if(!screenShotFlag) {
+                initialScreenShot = shoot();console.log(JSON.stringify(initialScreenShot));
+                screenShotFlag = 1;
+              } else {
+                compareWithBasicAndFireEvent(initialScreenShot, shoot());
+              }
+            },500);
           });
           this.gest = (function(functionToBeFiredOnGest) {
             var gestObject = {};
@@ -44,32 +78,12 @@
             failure = (function(error){
               alert("Error Occcured "+JSON.stringify(error));
             });
-            navigator.getUserMedia(constraints, success, failure);  
+            navigator.getUserMedia(constraints, success, failure);
+            startGestureReading(); 
           });
-          this.capture = (function(video, scaleFactor){
-            if(scaleFactor == null){
-                scaleFactor = 1;
-            }
-            var w = video.videoWidth * scaleFactor,
-                h = video.videoHeight * scaleFactor,
-                canvas = document.createElement('canvas'),
-                ctx;
-            canvas.width  = w;
-            canvas.height = h;
-            ctx = canvas.getContext('2d');
-            ctx.drawImage(video, 0, 0, w, h);
-            return canvas;
-          });
+          
 
-          this.shoot = (function() {
-              var video  = document.getElementById(videoElementId);
-              var canvas = this.capture(video, scaleFactor);
-              snapshots.unshift(canvas);
-              output.innerHTML = '';
-              // for(var i=0; i<4; i++){
-              //     output.appendChild(snapshots[i]);
-              // }
-          });
+          
 
     });
     var g = new Gesture();
