@@ -1,0 +1,92 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset=utf-8>
+	<title>HTML5 Video and Canvas: Video screenshot</title>
+	<!--[if IE]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->	
+
+</head>
+<body>
+	<video id="" style="" autoplay></video>
+	<canvas></canvas>
+	
+	
+	<script>
+    var Gesture = (function(){
+      navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;   
+      var videoElementId = "video_cameraDisplay",
+          canvasElementId = "canvas_screenShotCanvas", 
+          eventName = "gest",
+          createDomElement = (function(){
+            var video = document.createElement("video"),
+            canvas = document.createElement("canvas");
+            video.setAttribute("src","");
+            video.setAttribute("style","display:block;width:400px; height:400px;");
+            video.setAttribute("id", videoElementId);
+            canvas.setAttribute("id", canvasElementId);
+            document.body.appendChild(video);
+            document.body.appendChild(canvas);
+          }),
+          getGestureEvent = (function(){
+            return (function() {
+              alert("x");
+            });
+          }),
+          addEventListnerToBody = (function(){
+            var gestureEvent = getGestureEvent();
+            document.body.addEventListener(eventName, gestureEvent);
+          });
+          this.start = (function(){
+            createDomElement();
+            var camera = document.getElementById(videoElementId),
+            constraints = {video:true},
+            success = (function(stream) {
+              camera.src = window.URL.createObjectURL(stream);
+              camera.play();
+            }),
+            failure = (function(error){
+              alert("Error Occcured "+JSON.stringify(error));
+            });
+            navigator.getUserMedia(constraints, success, failure);  
+            addEventListnerToBody();
+            if (document.createEvent) {
+              document.body.dispatchEvent(eventName);
+            } else {
+              document.body.fireEvent("on"+eventName, eventName);
+            }
+          });
+      this.capture = (function(video, scaleFactor){
+        if(scaleFactor == null){
+            scaleFactor = 1;
+        }
+        var w = video.videoWidth * scaleFactor,
+            h = video.videoHeight * scaleFactor,
+            canvas = document.createElement('canvas'),
+            ctx;
+        canvas.width  = w;
+        canvas.height = h;
+        ctx = canvas.getContext('2d');
+        ctx.drawImage(video, 0, 0, w, h);
+        return canvas;
+      });
+
+      this.shoot = (function() {
+          var video  = document.getElementById(videoElementId);
+          var canvas = this.capture(video, scaleFactor);
+          snapshots.unshift(canvas);
+          output.innerHTML = '';
+          // for(var i=0; i<4; i++){
+          //     output.appendChild(snapshots[i]);
+          // }
+      });
+
+    });
+    var g = new Gesture();
+    g.start();    
+    document.addEventListener('gest', function() {
+        alert("y");
+    }, false);
+	</script>
+</body>
+</html>
