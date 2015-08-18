@@ -34,15 +34,17 @@
             var w = video.videoWidth * scaleFactor,
                 h = video.videoHeight * scaleFactor,
                 canvas = document.createElement('canvas'),
-                ctx,imageData;
+                ctx,imageData={};
             canvas.width  = w;
             canvas.height = h;
             ctx = canvas.getContext('2d');
             ctx.drawImage(video, 0, 0, w, h);
-            imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-            return imageData.data;
+            if(canvas.width) {
+              imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            }
+            return (typeof imageData.data!="undefined")?imageData.data:{};
           }),
-          shoot = (function() {
+          shoot = (function() {// this function will return image data in {"0":41,"1":35,"2":27} format
             var video  = document.getElementById(videoElementId);
             var imageData = capture(video, scaleFactor);
             return imageData;
