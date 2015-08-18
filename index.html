@@ -46,30 +46,30 @@
             });
             navigator.getUserMedia(constraints, success, failure);  
           });
-      this.capture = (function(video, scaleFactor){
-        if(scaleFactor == null){
-            scaleFactor = 1;
-        }
-        var w = video.videoWidth * scaleFactor,
-            h = video.videoHeight * scaleFactor,
-            canvas = document.createElement('canvas'),
-            ctx;
-        canvas.width  = w;
-        canvas.height = h;
-        ctx = canvas.getContext('2d');
-        ctx.drawImage(video, 0, 0, w, h);
-        return canvas;
-      });
+          this.capture = (function(video, scaleFactor){
+            if(scaleFactor == null){
+                scaleFactor = 1;
+            }
+            var w = video.videoWidth * scaleFactor,
+                h = video.videoHeight * scaleFactor,
+                canvas = document.createElement('canvas'),
+                ctx;
+            canvas.width  = w;
+            canvas.height = h;
+            ctx = canvas.getContext('2d');
+            ctx.drawImage(video, 0, 0, w, h);
+            return canvas;
+          });
 
-      this.shoot = (function() {
-          var video  = document.getElementById(videoElementId);
-          var canvas = this.capture(video, scaleFactor);
-          snapshots.unshift(canvas);
-          output.innerHTML = '';
-          // for(var i=0; i<4; i++){
-          //     output.appendChild(snapshots[i]);
-          // }
-      });
+          this.shoot = (function() {
+              var video  = document.getElementById(videoElementId);
+              var canvas = this.capture(video, scaleFactor);
+              snapshots.unshift(canvas);
+              output.innerHTML = '';
+              // for(var i=0; i<4; i++){
+              //     output.appendChild(snapshots[i]);
+              // }
+          });
 
     });
     var g = new Gesture();
