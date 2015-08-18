@@ -27,16 +27,12 @@
             canvas.setAttribute("id", canvasElementId);
             document.body.appendChild(video);
             document.body.appendChild(canvas);
-          }),
-          getGestureEvent = (function(){
-            return (function() {
-              alert("x");
-            });
-          }),
-          addEventListnerToBody = (function(){
-            var gestureEvent = getGestureEvent();
-            document.body.addEventListener(eventName, gestureEvent);
           });
+          this.gest = (function(functionToBeFiredOnGest) {
+            var gestObject = {};
+            functionToBeFiredOnGest(gestObject);
+          });
+
           this.start = (function(){
             createDomElement();
             var camera = document.getElementById(videoElementId),
@@ -49,12 +45,6 @@
               alert("Error Occcured "+JSON.stringify(error));
             });
             navigator.getUserMedia(constraints, success, failure);  
-            addEventListnerToBody();
-            if (document.createEvent) {
-              document.body.dispatchEvent(eventName);
-            } else {
-              document.body.fireEvent("on"+eventName, eventName);
-            }
           });
       this.capture = (function(video, scaleFactor){
         if(scaleFactor == null){
@@ -84,9 +74,9 @@
     });
     var g = new Gesture();
     g.start();    
-    document.addEventListener('gest', function() {
-        alert("y");
-    }, false);
+    g.gest(function(gestObject){
+      console.log(gestObject);
+    });
 	</script>
 </body>
 </html>
