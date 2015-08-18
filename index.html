@@ -34,33 +34,32 @@
             var w = video.videoWidth * scaleFactor,
                 h = video.videoHeight * scaleFactor,
                 canvas = document.createElement('canvas'),
-                ctx;
+                ctx,imageData;
             canvas.width  = w;
             canvas.height = h;
             ctx = canvas.getContext('2d');
             ctx.drawImage(video, 0, 0, w, h);
-            return canvas;
+            imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            return imageData.data;
           }),
           shoot = (function() {
             var video  = document.getElementById(videoElementId);
-            var canvas = capture(video, scaleFactor);
-            var snapshots = [];
-            snapshots.unshift(canvas);
-            return snapshots;
+            var imageData = capture(video, scaleFactor);
+            return imageData;
           }),
-          compareWithBasicAndFireEvent = (function(initialScreenShot, latestScreenShot) {
+          compareWithBasicAndFireEvent = (function(initialScreenShotData, latestScreenShot) {
              console.log("compare"); 
           }),
           startGestureReading = (function() {
-            var initialScreenShot;
+            var initialScreenShotData;
             window.setInterval(function(){
               if(!screenShotFlag) {
-                initialScreenShot = shoot();console.log(JSON.stringify(initialScreenShot));
+                initialScreenShotData = shoot();
                 screenShotFlag = 1;
               } else {
-                compareWithBasicAndFireEvent(initialScreenShot, shoot());
+                compareWithBasicAndFireEvent(initialScreenShotData, shoot());
               }
-            },500);
+            },1000);
           });
           this.gest = (function(functionToBeFiredOnGest) {
             var gestObject = {};
