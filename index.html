@@ -11,82 +11,8 @@
 	<video id="" style="" autoplay></video>
 	<canvas></canvas>
 	
-	
+  <script type="text/javascript" src="gesture.js"></script>	
 	<script>
-    var Gesture = (function(){
-      navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;   
-      var videoElementId = "video_cameraDisplay",
-          eventName = "gest",
-          screenShotFlag = 0,
-          scaleFactor = 0.25,
-          createDomElement = (function(){
-            var video = document.createElement("video");
-            video.setAttribute("src","");
-            video.setAttribute("style","display:block;width:400px; height:400px;");
-            video.setAttribute("id", videoElementId);
-            document.body.appendChild(video);
-            
-          }),
-          capture = (function(video, scaleFactor){
-            if(scaleFactor == null){
-                scaleFactor = 1;
-            }
-            var w = video.videoWidth * scaleFactor,
-                h = video.videoHeight * scaleFactor,
-                canvas = document.createElement('canvas'),
-                ctx,imageData={};
-            canvas.width  = w;
-            canvas.height = h;
-            ctx = canvas.getContext('2d');
-            ctx.drawImage(video, 0, 0, w, h);
-            if(canvas.width) {
-              imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-            }
-            return (typeof imageData.data!="undefined")?imageData.data:{};
-          }),
-          shoot = (function() {// this function will return image data in {"0":41,"1":35,"2":27} format
-            var video  = document.getElementById(videoElementId);
-            var imageData = capture(video, scaleFactor);
-            return imageData;
-          }),
-          compareWithBasicAndFireEvent = (function(initialScreenShotData, latestScreenShot) {
-             console.log("compare"); 
-          }),
-          startGestureReading = (function() {
-            var initialScreenShotData;
-            window.setInterval(function(){
-              if(!screenShotFlag) {
-                initialScreenShotData = shoot();
-                screenShotFlag = 1;
-              } else {
-                compareWithBasicAndFireEvent(initialScreenShotData, shoot());
-              }
-            },1000);
-          });
-          this.gest = (function(functionToBeFiredOnGest) {
-            var gestObject = {};
-            functionToBeFiredOnGest(gestObject);
-          });
-
-          this.start = (function(){
-            createDomElement();
-            var camera = document.getElementById(videoElementId),
-            constraints = {video:true},
-            success = (function(stream) {
-              camera.src = window.URL.createObjectURL(stream);
-              camera.play();
-            }),
-            failure = (function(error){
-              alert("Error Occcured "+JSON.stringify(error));
-            });
-            navigator.getUserMedia(constraints, success, failure);
-            startGestureReading(); 
-          });
-          
-
-          
-
-    });
     var g = new Gesture();
     g.start();    
     g.gest(function(gestObject){
