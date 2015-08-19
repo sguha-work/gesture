@@ -56,7 +56,7 @@
           startGestureReading = (function() {
             var initialScreenShotData;
             window.setInterval(function(){
-              if(!screenShotFlag) {
+              if(!screenShotFlag) {console.log("1");
                 initialScreenShotData = shoot();
                 screenShotFlag = 1;
               } else {
