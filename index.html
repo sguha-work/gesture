@@ -50,15 +50,13 @@
             return imageData;
           }),
           compareWithBasicAndFireEvent = (function(initialScreenShotData, latestScreenShot) {
-             console.log(initialScreenShotData);
-             console.log(latestScreenShot);
              var changeCounter = 0,
                  arrayLength = initialScreenShotData.length,
                  flag = 0;
              for(var index = 0; index<arrayLength; index++) {
               if(initialScreenShotData[index]!=latestScreenShot[index]) {
                 changeCounter += 1;
-                if(changeCounter>((arrayLength*60)/100)) {
+                if(changeCounter>((arrayLength*0.5))) {
                   flag = 1;
                   break;
                 }
