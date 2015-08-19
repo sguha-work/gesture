@@ -3,7 +3,6 @@ var Gesture = (function(){
       var videoElementId = "video_cameraDisplay",
           eventName = "gest",
           functionToBeFiredOnGest,
-          scaleFactor = 0.25,
           createDomElement = (function(){
             var video = document.createElement("video");
             video.setAttribute("src","");
@@ -12,12 +11,9 @@ var Gesture = (function(){
             document.body.appendChild(video);
             
           }),
-          capture = (function(video, scaleFactor){
-            if(scaleFactor == null){
-                scaleFactor = 1;
-            }
-            var w = video.videoWidth * scaleFactor,
-                h = video.videoHeight * scaleFactor,
+          capture = (function(video){
+            var w = video.videoWidth,
+                h = video.videoHeight,
                 canvas = document.createElement('canvas'),
                 ctx,imageData={};
             canvas.width  = w;
@@ -31,15 +27,15 @@ var Gesture = (function(){
           }),
           shoot = (function() {// this function will return image data in {"0":41,"1":35,"2":27} format
             var video  = document.getElementById(videoElementId);
-            var imageData = capture(video, scaleFactor);
+            var imageData = capture(video);
             return imageData;
           }),
-          compareWithBasicAndFireEvent = (function(screenshot, screenShot2) {
+          compareWithBasicAndFireEvent = (function(screenShot1, screenShot2) {
              var changeCounter = 0,
-                 arrayLength = screenshot.length,
+                 arrayLength = screenShot1.length,
                  flag = 0;
              for(var index = 0; index<arrayLength; index++) {
-              if(screenshot[index]!=screenShot2[index]) {
+              if(screenShot1[index]!=screenShot2[index]) {
                 changeCounter += 1;
                 if(changeCounter>((arrayLength*0.6))) {
                   flag = 1;
