@@ -12,8 +12,8 @@ var Gesture = (function(){
             
           }),
           capture = (function(video){
-            var w = video.videoWidth,
-                h = video.videoHeight,
+            var w = video.videoWidth*0.2,
+                h = video.videoHeight*0.2,
                 canvas = document.createElement('canvas'),
                 ctx,imageData={};
             canvas.width  = w;
@@ -25,7 +25,7 @@ var Gesture = (function(){
             }
             return (typeof imageData.data!="undefined")?imageData.data:{};
           }),
-          shoot = (function() {// this function will return image data in {"0":41,"1":35,"2":27} format
+          shoot = (function() {
             var video  = document.getElementById(videoElementId);
             var imageData = capture(video);
             return imageData;
