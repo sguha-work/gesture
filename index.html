@@ -58,7 +58,7 @@
              for(var index = 0; index<arrayLength; index++) {
               if(initialScreenShotData[index]!=latestScreenShot[index]) {
                 changeCounter += 1;
-                if(changeCounter>(arrayLength/2)) {
+                if(changeCounter>((arrayLength*75)/100)) {
                   flag = 1;
                   break;
                 }
