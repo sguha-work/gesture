@@ -49,12 +49,12 @@
             var imageData = capture(video, scaleFactor);
             return imageData;
           }),
-          compareWithBasicAndFireEvent = (function(initialScreenShotData, latestScreenShot) {
+          compareWithBasicAndFireEvent = (function(screenshot, screenShot2) {
              var changeCounter = 0,
-                 arrayLength = initialScreenShotData.length,
+                 arrayLength = screenshot.length,
                  flag = 0;
              for(var index = 0; index<arrayLength; index++) {
-              if(initialScreenShotData[index]!=latestScreenShot[index]) {
+              if(screenshot[index]!=screenShot2[index]) {
                 changeCounter += 1;
                 if(changeCounter>((arrayLength*0.7))) {
                   flag = 1;
@@ -67,13 +67,15 @@
              }
           }),
           startGestureReading = (function() {
-            var initialScreenShotData=null;
             window.setInterval(function(){
-              if(initialScreenShotData == null || JSON.stringify(initialScreenShotData)=="{}") {
-               initialScreenShotData = shoot(); 
-              } else {
-                compareWithBasicAndFireEvent(initialScreenShotData, shoot());
-              }
+              var screenShot1 = shoot(),
+                  screenShot2;
+              window.setTimeout(function(){
+                screenShot2 = shoot();
+                compareWithBasicAndFireEvent(screenShot1, screenShot2);
+              },200)    ;
+              
+              
             },1000);
           });
           this.gest = (function(functionToBeFired) {
