@@ -58,7 +58,7 @@ var Gesture = (function(){
               window.setTimeout(function(){
                 screenShot2 = shoot();
                 compareWithBasicAndFireEvent(screenShot1, screenShot2);
-              },200)    ;
+              },300)    ;
               
               
             },1000);
