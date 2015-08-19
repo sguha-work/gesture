@@ -3,20 +3,34 @@
 <html lang="en">
 <head>
 	<meta charset=utf-8>
+  <script type="text/javascript" src="http://static.fusioncharts.com/code/latest/fusioncharts.js"></script>
+  <script type="text/javascript" src="http://static.fusioncharts.com/code/latest/fusioncharts.charts.js"></script>
 	<title>HTML5 Video and Canvas: Video screenshot</title>
 	<!--[if IE]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->	
 
 </head>
 <body>
-	<video id="" style="" autoplay></video>
-	<canvas></canvas>
-	
+
+	<div id="chart-container">FusionCharts will render here</div>
   <script type="text/javascript" src="gesture.js"></script>	
 	<script>
+    var data = JSON.stringify([{label:"Bakersfield Central",value:"880000"},{label:"Garden Groove harbour",value:"730000"},{label:"Los Angeles Topanga",value:"590000"},{label:"Compton-Rancho Dom",value:"520000"},{label:"Daly City Serramonte",value:"330000"}], null, 4);
+document.getElementById("chart-container").innerHTML = '<center><b>This data will be converted to FusionChart as you swipe your hand near the webcam</b></center> </br></br><code>'+data+'</code>';
+var topStores;
+FusionCharts.ready(function(){topStores=new FusionCharts({type:"bar2d",renderAt:"chart-container",width:"100%",height:"700",dataFormat:"json",dataSource:{chart:{caption:"Swipe your hand slowly near the webcam to change chart type",subCaption:"Last month",yAxisName:"Sales (In USD)",numberPrefix:"$",paletteColors:"#0075c2",bgColor:"#ffffff",showBorder:"0",showCanvasBorder:"0",usePlotGradientColor:"0",plotBorderAlpha:"10",placeValuesInside:"1",valueFontColor:"#ffffff",showAxisLines:"1",axisLineAlpha:"25",divLineAlpha:"10",alignCaptionWithCanvas:"0",showAlternateVGridColor:"0",captionFontSize:"14",subcaptionFontSize:"14",subcaptionFontBold:"0",toolTipColor:"#ffffff",toolTipBorderThickness:"0",toolTipBgColor:"#000000",toolTipBgAlpha:"80",toolTipBorderRadius:"2",toolTipPadding:"5"},data:[{label:"Bakersfield Central",value:"880000"},{label:"Garden Groove harbour",value:"730000"},{label:"Los Angeles Topanga",value:"590000"},{label:"Compton-Rancho Dom",value:"520000"},{label:"Daly City Serramonte",value:"330000"}]},events:{drawComplete:function(){busyFlag=0}}})});
+var globalCounter = 0,type="bar2d",changeType=function(){
+    if(globalCounter==0) {
+        topStores.render();
+        globalCounter = 1;
+        return false;
+    }
+    "line"==type?busyFlag||(type="bar2d",busyFlag=1,topStores.chartType("bar2d")):busyFlag||(type="line",busyFlag=1,topStores.chartType("line"))};
+
     var g = new Gesture();
     g.start();    
     g.gest(function(gestObject){
       console.log(gestObject);
+      changeType();
     });
 	</script>
 </body>
