@@ -56,11 +56,10 @@
           startGestureReading = (function() {
             var initialScreenShotData=null;
             window.setInterval(function(){
-              if(screenShotFlag && initialScreenShotData != null) {
-                compareWithBasicAndFireEvent(initialScreenShotData, shoot());
+              if(initialScreenShotDat == null) {
+               initialScreenShotDat = shoot(); 
               } else {
-                initialScreenShotData = shoot();
-                screenShotFlag = 1;
+                compareWithBasicAndFireEvent(initialScreenShotData, shoot());
               }
             },1000);
           });
