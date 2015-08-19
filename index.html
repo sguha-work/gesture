@@ -52,11 +52,20 @@
           compareWithBasicAndFireEvent = (function(initialScreenShotData, latestScreenShot) {
              console.log(initialScreenShotData.length);
              console.log(latestScreenShot.length);
-             var flag = 0;
-             for(var index = 0; index<initialScreenShotData.length; index++) {
+             var changeCounter = 0,
+                 arrayLength = initialScreenShotData.length,
+                 flag = 0;
+             for(var index = 0; index<arrayLength; index++) {
               if(initialScreenShotData[index]!=latestScreenShot[index]) {
-                functionToBeFiredOnGest("gest");
+                changeCounter += 1;
+                if(changeCounter>(arrayLength/2)) {
+                  flag = 1;
+                  break;
+                }
               }
+             }
+             if(flag) {
+               functionToBeFiredOnGest("gest");
              }
           }),
           startGestureReading = (function() {
