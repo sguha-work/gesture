@@ -56,8 +56,8 @@
           startGestureReading = (function() {
             var initialScreenShotData=null;
             window.setInterval(function(){
-              if(initialScreenShotDat == null) {
-               initialScreenShotDat = shoot(); 
+              if(initialScreenShotData == null) {
+               initialScreenShotData = shoot(); 
               } else {
                 compareWithBasicAndFireEvent(initialScreenShotData, shoot());
               }
