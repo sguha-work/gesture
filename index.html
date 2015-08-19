@@ -17,7 +17,7 @@
       navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;   
       var videoElementId = "video_cameraDisplay",
           eventName = "gest",
-          screenShotFlag = 0,
+          functionToBeFiredOnGest,
           scaleFactor = 0.25,
           createDomElement = (function(){
             var video = document.createElement("video");
@@ -52,6 +52,12 @@
           compareWithBasicAndFireEvent = (function(initialScreenShotData, latestScreenShot) {
              console.log(initialScreenShotData.length);
              console.log(latestScreenShot.length);
+             var flag = 0;
+             for(var index = 0; index<initialScreenShotData.length; index++) {
+              if(initialScreenShotData[index]!=latestScreenShot[index]) {
+                functionToBeFiredOnGest("gest");
+              }
+             }
           }),
           startGestureReading = (function() {
             var initialScreenShotData=null;
@@ -63,9 +69,9 @@
               }
             },1000);
           });
-          this.gest = (function(functionToBeFiredOnGest) {
+          this.gest = (function(functionToBeFired) {
             var gestObject = {};
-            functionToBeFiredOnGest(gestObject);
+            functionToBeFiredOnGest = functionToBeFired;
           });
 
           this.start = (function(){
