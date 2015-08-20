@@ -50,34 +50,54 @@ var Gesture = (function() {
                         imageArray[x][y] = imageData[index];
                     }
                 }
+                return imageArray;
             }
-            return imageArray;
+            return [];
+            
         }),
         compareWithBasicAndFireEvent = (function(screenShot1, screenShot2) {
             if (typeof screenShot1[0] != "undefined") {
                 var changeCounter = 0,
-                    arrayLength = screenShot1.length,
+                    arrayHeight = screenShot1.length,
+                    arrayWidth = screenShot1[0].length,
                     flag = 0;
-                for (var index = 0; index < arrayLength; index++) {
-                    if (screenShot1[index][74] != screenShot2[index][74]) {
-                        changeCounter += 1;
-                        if (changeCounter > ((arrayLength * 0.7))) {
-                            flag = 1;
-                            break;
-                        }
+                for(var index1=0; index1<arrayHeight; index1++) {
+                  for(var index2 = index1; index2<arrayWidth; index2++) {
+                    if(screenShot1[index1][index2]!=screenShot2[index1][index2]) {
+                      changeCounter += 1;
                     }
+                    if(changeCounter > (arrayWidth*arrayHeight*0.6)) {
+                      flag = 1;
+                      break;
+                    }
+                  }
                 }
                 if (flag) {
                     functionToBeFiredOnGest("gest");
                 }
             }
         }),
+        chopMatrix = (function(matrix) {
+          var newMatrix = [],
+          indexOfNewMatrix = 0;
+          for(var index=50; index<=70; index++) {
+            if(matrix.length == 0) {
+              return [];
+            }
+            newMatrix[indexOfNewMatrix] = [];
+            for(var index2=300; index2<=400; index2++) {
+              newMatrix[indexOfNewMatrix].push(matrix[index][index2]);  
+            }
+            indexOfNewMatrix += 1;
+          }
+          return newMatrix;
+        }),
         startGestureReading = (function() {
             window.setInterval(function() {
-                var screenShot1 = shoot(),
+                var screenShot1 = chopMatrix(shoot()),
                     screenShot2;
                 window.setTimeout(function() {
-                    screenShot2 = shoot();
+                    screenShot2 = chopMatrix(shoot());
                     compareWithBasicAndFireEvent(screenShot1, screenShot2);
                 }, 500);
 
