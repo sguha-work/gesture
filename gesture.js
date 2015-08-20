@@ -79,7 +79,7 @@ var Gesture = (function() {
                 window.setTimeout(function() {
                     screenShot2 = shoot();
                     compareWithBasicAndFireEvent(screenShot1, screenShot2);
-                }, 300);
+                }, 500);
 
 
             }, 1000);
