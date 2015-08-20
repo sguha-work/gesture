@@ -61,7 +61,7 @@ var Gesture = (function() {
                 for (var index = 0; index < arrayLength; index++) {
                     if (screenShot1[index][74] != screenShot2[index][74]) {
                         changeCounter += 1;
-                        if (changeCounter > ((arrayLength * 0.65))) {
+                        if (changeCounter > ((arrayLength * 0.7))) {
                             flag = 1;
                             break;
                         }
@@ -79,7 +79,7 @@ var Gesture = (function() {
                 window.setTimeout(function() {
                     screenShot2 = shoot();
                     compareWithBasicAndFireEvent(screenShot1, screenShot2);
-                }, 300);
+                }, 500);
 
 
             }, 1000);
